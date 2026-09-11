@@ -1,0 +1,9 @@
+{
+  "pid": 43469,
+  "port": 51555,
+  "token": "610d76dc-efa5-4bfb-85af-4ac8a1858319",
+  "startedAt": "2026-09-11T12:54:44.562Z",
+  "serverPath": "/Users/ruru/.claude/skills/gstack/browse/src/server.ts",
+  "mode": "launched",
+  "configHash": "303a7eeccc03078b"
+}

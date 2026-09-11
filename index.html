@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Shorts Find Audiences</title>
+<meta name="description" content="How documentary shorts find their audiences. A talk for the Frontline Non-fiction Short Film Fellowship.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500&display=swap">
+<style>
+  html, body { margin: 0; padding: 0; background: #161311; }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    --ink: #161311;
+    --surface: #1F1B17;
+    --red: #EA2B40;
+    --text: #F6F3EC;
+    --muted: #A69C90;
+    --dim: #756C63;
+    --line: rgba(246, 243, 236, 0.11);
+    --grid: rgba(246, 243, 236, 0.028);
+
+    --display: "Newsreader", "Times New Roman", serif;
+    --sans: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    --han: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+
+    --pad: clamp(1.6rem, 5vw, 5.5rem);
+  }
+
+  body {
+    background-color: var(--ink);
+    background-image:
+      repeating-linear-gradient(to right, var(--grid) 0 1px, transparent 1px 100px),
+      repeating-linear-gradient(to bottom, var(--grid) 0 1px, transparent 1px 100px);
+    color: var(--text);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .deck { background: transparent; }
+
+  .deck {
+    counter-reset: slide;
+    scroll-snap-type: y proximity;
+    overflow-y: auto;
+    height: 100svh;
+  }
+
+  section {
+    counter-increment: slide;
+    scroll-snap-align: start;
+    min-height: 100svh;
+    padding: clamp(3rem, 7vh, 5rem) var(--pad) clamp(4rem, 9vh, 6rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(1.4rem, 3vh, 2.4rem);
+    position: relative;
+    border-bottom: 1px solid var(--line);
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+  /* ---- shared type roles ---- */
+
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: clamp(0.66rem, 0.9vw, 0.78rem);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+  .eyebrow .zh {
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    font-family: var(--han);
+    font-weight: 400;
+    margin-left: 0.9em;
+  }
+
+  h1, h2 {
+    font-family: var(--display);
+    font-weight: 500;
+    line-height: 1.06;
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+    margin: 0;
+  }
+  h1 { font-size: clamp(2.6rem, 7.4vw, 6rem); }
+  h2 { font-size: clamp(2rem, 5.1vw, 4.1rem); max-width: 19ch; }
+  h2.wide { max-width: 26ch; }
+  h2.long { font-size: clamp(1.55rem, 3.3vw, 2.75rem); max-width: 34ch; line-height: 1.14; }
+
+  .zh-head {
+    font-family: var(--han);
+    font-weight: 300;
+    font-size: clamp(1.02rem, 2.05vw, 1.62rem);
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: none;
+    letter-spacing: 0.02em;
+  }
+
+  p.en.wide { max-width: none; }
+  p.en {
+    font-size: clamp(1.02rem, 1.55vw, 1.35rem);
+    line-height: 1.55;
+    max-width: 46ch;
+    margin: 0;
+    color: var(--text);
+    font-weight: 400;
+  }
+  p.zh {
+    font-family: var(--han);
+    font-weight: 300;
+    font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+    line-height: 1.75;
+    max-width: none;
+    margin: 0.45rem 0 0;
+    color: var(--muted);
+  }
+
+  .stack { display: flex; flex-direction: column; gap: 0.55rem; }
+
+  /* ---- page numbers ---- */
+
+  .num {
+    position: absolute;
+    left: var(--pad);
+    bottom: clamp(1.4rem, 3.5vh, 2.4rem);
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: var(--dim);
+    font-variant-numeric: tabular-nums;
+  }
+  .num::before { content: counter(slide, decimal-leading-zero); }
+
+  .mark {
+    position: absolute;
+    right: var(--pad);
+    bottom: clamp(1.3rem, 3.3vh, 2.3rem);
+    display: block;
+    width: clamp(2.6rem, 3.6vw, 3.6rem);
+    height: auto;
+    color: var(--red);
+    opacity: 0.88;
+  }
+  .cover .mark, .end .mark { width: clamp(4.2rem, 6.4vw, 6.4rem); opacity: 1; }
+
+  /* ---- cover ---- */
+
+  .cover { justify-content: center; }
+  .cover .rule {
+    width: clamp(3rem, 8vw, 6rem);
+    height: 3px;
+    background: var(--red);
+    border: 0;
+    margin: 0;
+  }
+  .cover .who {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.6rem;
+    align-items: baseline;
+    margin-top: clamp(1rem, 3vh, 2rem);
+  }
+  .cover .who .name {
+    font-family: var(--display);
+    font-size: clamp(1.15rem, 1.9vw, 1.5rem);
+    font-weight: 500;
+  }
+  .cover .who .role {
+    font-size: clamp(0.82rem, 1.05vw, 0.94rem);
+    color: var(--muted);
+  }
+  .cover .who .role .zh {
+    font-family: var(--han);
+    font-weight: 300;
+    color: var(--dim);
+    margin-left: 0.7em;
+  }
+
+  /* ---- quote page ---- */
+
+  .quote h2 {
+    font-weight: 500;
+    max-width: 22ch;
+  }
+  .quote .attrib {
+    font-size: 0.85rem;
+    color: var(--dim);
+    letter-spacing: 0.04em;
+  }
+  .quote .attrib .zh { font-family: var(--han); font-weight: 300; }
+
+  /* ---- three-column grids ---- */
+
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: clamp(1.6rem, 3.2vw, 3.4rem);
+    align-items: start;
+    margin-top: clamp(0.5rem, 2vh, 1.4rem);
+  }
+  .col { display: flex; flex-direction: column; gap: 0.6rem; }
+  .col .tag {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--red);
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .col h3 {
+    font-family: var(--display);
+    font-size: clamp(1.35rem, 2.3vw, 1.95rem);
+    font-weight: 500;
+    line-height: 1.18;
+    margin: 0.2rem 0 0;
+    letter-spacing: -0.012em;
+  }
+  .col .en-sub { font-family: var(--sans); font-size: clamp(0.84rem, 1.05vw, 0.98rem); line-height: 1.5; color: var(--text); opacity: 0.8; margin: 0; }
+  .steps .step .en-sub { font-family: var(--sans); font-size: clamp(0.88rem, 1.1vw, 1.02rem); line-height: 1.5; color: var(--text); opacity: 0.8; margin: 0; }
+  .col .zh { font-family: var(--han); font-weight: 300; font-size: clamp(0.86rem, 1.1vw, 1rem); line-height: 1.7; color: var(--muted); margin: 0; }
+  .col .zh.lead { color: var(--text); opacity: 0.82; }
+
+  /* ---- numbered learnings ---- */
+
+  .learn { display: flex; flex-direction: column; gap: clamp(1.3rem, 2.6vh, 2.1rem); margin-top: 0.6rem; }
+  .learn .row {
+    display: grid;
+    grid-template-columns: 3.2rem 1fr;
+    gap: clamp(0.8rem, 2vw, 2rem);
+    align-items: baseline;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--line);
+  }
+  .learn .row:first-child { border-top: 0; padding-top: 0; }
+  .learn .idx {
+    font-family: var(--display);
+    font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+    color: var(--red);
+    font-weight: 300;
+    font-variant-numeric: tabular-nums;
+  }
+  .learn h3 {
+    font-family: var(--display);
+    font-size: clamp(1.4rem, 2.8vw, 2.3rem);
+    font-weight: 500;
+    line-height: 1.16;
+    margin: 0 0 0.35rem;
+    letter-spacing: -0.014em;
+  }
+  .learn .zh { font-family: var(--han); font-weight: 300; font-size: clamp(0.9rem, 1.15vw, 1.05rem); line-height: 1.75; color: var(--muted); margin: 0; max-width: none; }
+
+  /* ---- split page: text left, diagram right ---- */
+
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  .split .side { display: flex; flex-direction: column; gap: clamp(1.1rem, 2.4vh, 1.9rem); }
+  .split h2 { max-width: 21ch; text-wrap: pretty; }
+  .split h2 .hl { color: var(--red); font-style: normal; }
+  .gapfig { width: 100%; height: auto; display: block; }
+  .gapfig .lbl {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    fill: var(--muted);
+  }
+  .gapfig .lbl.warn { fill: var(--red); }
+  .gapfig .broken { stroke: var(--dim); }
+  .gapfig .whole { stroke: var(--red); }
+  .gapfig .dot { fill: var(--dim); }
+  .gapfig .dot.on { fill: var(--red); }
+
+  @media (max-width: 900px) {
+    .split { grid-template-columns: 1fr; gap: clamp(1.6rem, 4vh, 2.6rem); }
+    .split h2 { max-width: 20ch; }
+  }
+
+  /* ---- where a short can go ---- */
+
+  .routes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2.1vh, 1.6rem) clamp(1.8rem, 3.6vw, 3.4rem);
+    margin-top: clamp(0.4rem, 1.6vh, 1.1rem);
+  }
+  @media (max-width: 820px) { .routes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 540px) { .routes { grid-template-columns: 1fr; } }
+  .route { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 0.7rem; border-top: 1px solid var(--line); }
+  .route .en {
+    font-family: var(--display);
+    font-size: clamp(1.15rem, 1.85vw, 1.55rem);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+  }
+  .route .en-sub {
+    font-family: var(--sans);
+    font-size: clamp(0.82rem, 1.02vw, 0.95rem);
+    line-height: 1.5;
+    color: var(--text);
+    opacity: 0.82;
+    margin: 0.15rem 0 0;
+  }
+  .route .zh { font-family: var(--han); font-weight: 300; font-size: clamp(0.8rem, 1vw, 0.92rem); line-height: 1.7; color: var(--muted); margin: 0; }
+
+  /* ---- a case told in the speaker's own words ---- */
+
+  .case {
+    border-left: 2px solid var(--red);
+    padding-left: clamp(1rem, 2vw, 1.6rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.85rem, 1.8vh, 1.3rem);
+    max-width: none;
+  }
+  .case p.en { font-size: clamp(0.96rem, 1.35vw, 1.18rem); line-height: 1.5; max-width: 64ch; }
+  .case p.zh { font-size: clamp(0.85rem, 1.05vw, 0.97rem); line-height: 1.7; max-width: none; margin-top: 0.3rem; }
+  .case .stack { gap: 0.3rem; }
+  .case .punch {
+    font-family: var(--display);
+    font-size: clamp(1.3rem, 2.3vw, 1.85rem);
+    margin-top: 0.3rem;
+    font-weight: 500;
+    line-height: 1.22;
+    letter-spacing: -0.016em;
+    color: var(--red);
+  }
+  .case .punch .zh { display: block; font-family: var(--han); font-weight: 300; font-size: 0.52em; color: var(--muted); margin-top: 0.5rem; letter-spacing: 0.02em; }
+
+  /* ---- the chain ---- */
+
+  .chain {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 0.55rem;
+    margin-top: 0.4rem;
+  }
+  .chain .link {
+    flex: 1 1 8.5rem;
+    padding: clamp(0.9rem, 1.6vw, 1.3rem) clamp(0.8rem, 1.4vw, 1.15rem);
+    background: var(--surface);
+    border-top: 2px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .chain .link.live { border-top-color: var(--red); }
+  .chain .link.unreached {
+    background: transparent;
+    border: 1px dashed var(--line);
+    border-top: 2px dashed var(--red);
+  }
+  .chain .gap.faint { color: var(--dim); opacity: 0.45; }
+  .chain .link .en { font-size: clamp(0.92rem, 1.25vw, 1.08rem); font-weight: 500; letter-spacing: -0.005em; }
+  .chain .link .zh { font-family: var(--han); font-weight: 300; font-size: 0.8rem; color: var(--dim); line-height: 1.55; }
+  .chain .link.live .en { color: var(--red); }
+  .chain .gap {
+    flex: 0 0 auto;
+    align-self: center;
+    color: var(--dim);
+    font-size: 0.9rem;
+  }
+
+  /* ---- big stats ---- */
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+    gap: clamp(1.8rem, 4vw, 4rem);
+    margin-top: clamp(0.6rem, 2vh, 1.4rem);
+  }
+  .stat { display: flex; flex-direction: column; gap: 0.5rem; }
+  .stat .fig {
+    font-family: var(--display);
+    font-size: clamp(3.2rem, 8vw, 6.2rem);
+    font-weight: 300;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    color: var(--red);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat .cap { font-size: clamp(0.94rem, 1.3vw, 1.12rem); line-height: 1.5; max-width: 34ch; }
+  .stat .zh { font-family: var(--han); font-weight: 300; font-size: clamp(0.85rem, 1.05vw, 0.97rem); color: var(--muted); line-height: 1.7; max-width: none; margin: 0; }
+
+  /* ---- do-now list ---- */
+
+  .steps { display: flex; flex-direction: column; gap: 0; margin-top: 0.4rem; }
+  .steps .step {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.4rem;
+    padding: clamp(1rem, 2.2vh, 1.6rem) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .steps .step:first-child { border-top: 1px solid var(--line); }
+  .steps .step .en {
+    font-family: var(--display);
+    font-size: clamp(1.35rem, 2.5vw, 2.05rem);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+  }
+  .steps .step .en i { font-style: normal; color: var(--red); margin-right: 0.6em; font-weight: 300; }
+  .steps .step .zh { font-family: var(--han); font-weight: 300; font-size: clamp(0.88rem, 1.15vw, 1.03rem); color: var(--muted); line-height: 1.7; max-width: none; margin: 0; padding-left: 0; }
+
+  /* ---- closing ---- */
+
+  .close h2 { max-width: 24ch; }
+  .close .lines { display: flex; flex-direction: column; gap: clamp(1.1rem, 2.4vh, 1.8rem); margin-top: 0.6rem; }
+  .close .line { padding-left: clamp(0.9rem, 1.6vw, 1.3rem); border-left: 2px solid var(--red); }
+  .close .line .en { font-family: var(--display); font-size: clamp(1.25rem, 2.3vw, 1.85rem); font-weight: 500; line-height: 1.25; letter-spacing: -0.012em; }
+  .close .line .zh { font-family: var(--han); font-weight: 300; font-size: clamp(0.88rem, 1.12vw, 1.02rem); color: var(--muted); line-height: 1.7; margin: 0.35rem 0 0; }
+
+  .end { align-items: flex-start; justify-content: center; }
+  .end .thanks {
+    font-family: var(--display);
+    font-size: clamp(2.4rem, 6vw, 4.6rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+  .end .thanks .zh { font-family: var(--han); font-weight: 300; color: var(--muted); font-size: 0.42em; display: block; margin-top: 0.7rem; letter-spacing: 0.04em; }
+  .end .handle { color: var(--red); font-size: clamp(0.95rem, 1.3vw, 1.1rem); font-weight: 500; letter-spacing: 0.02em; margin-top: clamp(1.2rem, 3vh, 2rem); }
+
+  /* ---- nav hint ---- */
+
+  .hint {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0.85rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    background: rgba(11, 11, 15, 0.82);
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--line);
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .hint.gone { opacity: 0; }
+
+  :focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+  #deck:focus, #deck:focus-visible { outline: none; }
+
+  @media (max-height: 820px) {
+    section {
+      padding: clamp(2rem, 5vh, 3.2rem) var(--pad) clamp(2.6rem, 6.5vh, 4rem);
+      gap: clamp(0.9rem, 2.1vh, 1.6rem);
+    }
+    h2 { font-size: clamp(1.8rem, 4.4vw, 3.4rem); }
+    p.en { font-size: clamp(0.95rem, 1.4vw, 1.18rem); line-height: 1.5; }
+    p.zh { font-size: clamp(0.84rem, 1.1vw, 0.97rem); line-height: 1.65; }
+    .zh-head { font-size: clamp(0.95rem, 1.75vw, 1.34rem); line-height: 1.5; }
+    .route .en-sub { font-size: clamp(0.78rem, 0.95vw, 0.9rem); line-height: 1.45; }
+    .stack { gap: 0.4rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .deck { scroll-behavior: auto; }
+    .hint { transition: none; }
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="giloo-mark" viewBox="0 0 236.93 105.05" fill="currentColor" fill-rule="nonzero"><g transform="translate(-235.828 -681.695)"><path d="M 279.859375 735.40625 C 279.859375 733.398438 279.472656 731.453125 278.703125 729.570312 C 277.933594 727.6875 276.882812 726.023438 275.554688 724.570312 C 274.230469 723.121094 272.683594 721.953125 270.90625 721.074219 C 269.132812 720.199219 267.242188 719.761719 265.234375 719.761719 C 263.230469 719.761719 261.335938 720.101562 259.5625 720.78125 C 257.789062 721.460938 256.246094 722.464844 254.941406 723.789062 C 253.628906 725.117188 252.601562 726.757812 251.847656 728.710938 C 251.097656 730.664062 250.722656 732.894531 250.722656 735.40625 C 250.722656 737.804688 251.097656 739.964844 251.847656 741.882812 C 252.601562 743.800781 253.628906 745.441406 254.941406 746.800781 C 256.246094 748.164062 257.789062 749.210938 259.5625 749.945312 C 261.335938 750.679688 263.230469 751.046875 265.234375 751.046875 C 267.242188 751.046875 269.132812 750.609375 270.90625 749.730469 C 272.683594 748.851562 274.230469 747.6875 275.554688 746.238281 C 276.882812 744.785156 277.933594 743.117188 278.703125 741.238281 C 279.472656 739.351562 279.859375 737.410156 279.859375 735.40625 M 294.640625 757.445312 C 294.640625 761.496094 293.871094 765.296875 292.328125 768.84375 C 290.789062 772.390625 288.683594 775.496094 286.015625 778.144531 C 283.34375 780.796875 280.222656 782.898438 276.660156 784.4375 C 273.09375 785.976562 269.285156 786.746094 265.234375 786.746094 L 257.867188 786.640625 L 257.867188 771.960938 L 265.128906 772.066406 C 267.421875 772.066406 269.375 771.773438 270.988281 771.183594 C 272.601562 770.59375 273.964844 769.785156 275.070312 768.761719 C 276.1875 767.742188 277.070312 766.5625 277.730469 765.242188 C 278.398438 763.914062 278.925781 762.519531 279.320312 761.046875 C 278.746094 761.980469 277.921875 762.738281 276.847656 763.332031 C 275.773438 763.921875 274.582031 764.40625 273.269531 764.785156 C 271.964844 765.160156 270.601562 765.417969 269.183594 765.5625 C 267.773438 765.707031 266.449219 765.78125 265.234375 765.78125 C 261.183594 765.78125 257.375 765.078125 253.8125 763.683594 C 250.242188 762.285156 247.128906 760.285156 244.457031 757.6875 C 241.785156 755.089844 239.679688 751.910156 238.140625 748.148438 C 236.597656 744.382812 235.828125 740.132812 235.828125 735.40625 C 235.828125 731.066406 236.597656 727.035156 238.140625 723.308594 C 239.679688 719.578125 241.785156 716.355469 244.457031 713.628906 C 247.128906 710.90625 250.242188 708.773438 253.8125 707.234375 C 257.375 705.691406 261.183594 704.921875 265.234375 704.921875 C 267.097656 704.921875 268.945312 705.152344 270.773438 705.621094 C 272.601562 706.085938 274.375 706.730469 276.09375 707.554688 C 277.816406 708.378906 279.457031 709.347656 281.011719 710.457031 C 282.570312 711.570312 284.035156 712.773438 285.394531 714.0625 L 291.09375 707.234375 L 294.640625 707.234375 Z M 294.640625 757.445312"/><path d="M 322.035156 691.480469 C 322.035156 692.84375 321.773438 694.117188 321.253906 695.296875 C 320.734375 696.480469 320.027344 697.511719 319.128906 698.390625 C 318.234375 699.269531 317.1875 699.964844 315.984375 700.484375 C 314.785156 701.003906 313.503906 701.265625 312.144531 701.265625 C 310.78125 701.265625 309.5 701.003906 308.300781 700.484375 C 307.09375 699.964844 306.058594 699.269531 305.179688 698.390625 C 304.304688 697.511719 303.605469 696.480469 303.082031 695.296875 C 302.5625 694.117188 302.304688 692.84375 302.304688 691.480469 C 302.304688 690.15625 302.5625 688.890625 303.082031 687.691406 C 303.605469 686.488281 304.304688 685.453125 305.179688 684.570312 C 306.058594 683.695312 307.09375 682.996094 308.300781 682.476562 C 309.5 681.957031 310.78125 681.695312 312.144531 681.695312 C 313.503906 681.695312 314.785156 681.957031 315.984375 682.476562 C 317.1875 682.996094 318.234375 683.695312 319.128906 684.570312 C 320.027344 685.453125 320.734375 686.488281 321.253906 687.691406 C 321.773438 688.890625 322.035156 690.15625 322.035156 691.480469 M 319.507812 764.703125 L 304.722656 764.703125 L 304.722656 707.125 L 319.507812 707.125 Z M 319.507812 764.703125"/><path d="M 329.589844 764.703125 L 344.371094 764.703125 L 344.371094 684.222656 L 329.589844 684.222656 Z M 329.589844 764.703125"/><path d="M 410.097656 735.40625 C 410.097656 739.707031 409.324219 743.710938 407.785156 747.421875 C 406.246094 751.128906 404.144531 754.335938 401.496094 757.042969 C 398.84375 759.75 395.734375 761.882812 392.167969 763.441406 C 388.601562 765 384.777344 765.78125 380.691406 765.78125 C 376.640625 765.78125 372.832031 765 369.265625 763.441406 C 365.699219 761.882812 362.582031 759.75 359.910156 757.042969 C 357.242188 754.335938 355.136719 751.128906 353.597656 747.421875 C 352.050781 743.710938 351.28125 739.707031 351.28125 735.40625 C 351.28125 731.03125 352.050781 726.980469 353.597656 723.253906 C 355.136719 719.523438 357.242188 716.3125 359.910156 713.605469 C 362.582031 710.898438 365.699219 708.773438 369.265625 707.234375 C 372.832031 705.691406 376.640625 704.921875 380.691406 704.921875 C 384.777344 704.921875 388.601562 705.648438 392.167969 707.097656 C 395.734375 708.550781 398.84375 710.609375 401.496094 713.285156 C 404.144531 715.953125 406.246094 719.15625 407.785156 722.90625 C 409.324219 726.648438 410.097656 730.8125 410.097656 735.40625 M 395.316406 735.40625 C 395.316406 733.039062 394.929688 730.898438 394.160156 728.976562 C 393.386719 727.0625 392.339844 725.414062 391.011719 724.03125 C 389.6875 722.652344 388.136719 721.59375 386.363281 720.859375 C 384.589844 720.128906 382.699219 719.761719 380.691406 719.761719 C 378.683594 719.761719 376.792969 720.128906 375.019531 720.859375 C 373.242188 721.59375 371.703125 722.652344 370.398438 724.03125 C 369.085938 725.414062 368.058594 727.0625 367.304688 728.976562 C 366.554688 730.898438 366.175781 733.039062 366.175781 735.40625 C 366.175781 737.625 366.554688 739.6875 367.304688 741.585938 C 368.058594 743.488281 369.085938 745.136719 370.398438 746.53125 C 371.703125 747.929688 373.242188 749.035156 375.019531 749.839844 C 376.792969 750.644531 378.683594 751.046875 380.691406 751.046875 C 382.699219 751.046875 384.589844 750.671875 386.363281 749.917969 C 388.136719 749.167969 389.6875 748.109375 391.011719 746.746094 C 392.339844 745.386719 393.386719 743.734375 394.160156 741.800781 C 394.929688 739.867188 395.316406 737.734375 395.316406 735.40625"/><path d="M 472.757812 735.40625 C 472.757812 739.707031 471.984375 743.710938 470.445312 747.421875 C 468.90625 751.128906 466.804688 754.335938 464.15625 757.042969 C 461.503906 759.75 458.394531 761.882812 454.828125 763.441406 C 451.265625 765 447.4375 765.78125 443.351562 765.78125 C 439.300781 765.78125 435.492188 765 431.925781 763.441406 C 428.359375 761.882812 425.242188 759.75 422.574219 757.042969 C 419.902344 754.335938 417.796875 751.128906 416.253906 747.421875 C 414.710938 743.710938 413.941406 739.707031 413.941406 735.40625 C 413.941406 731.03125 414.710938 726.980469 416.253906 723.253906 C 417.796875 719.523438 419.902344 716.3125 422.574219 713.605469 C 425.242188 710.898438 428.359375 708.773438 431.925781 707.234375 C 435.492188 705.691406 439.300781 704.921875 443.351562 704.921875 C 447.4375 704.921875 451.265625 705.648438 454.828125 707.097656 C 458.394531 708.550781 461.503906 710.609375 464.15625 713.285156 C 466.804688 715.953125 468.90625 719.15625 470.445312 722.90625 C 471.984375 726.648438 472.757812 730.8125 472.757812 735.40625 M 457.972656 735.40625 C 457.972656 733.039062 457.589844 730.898438 456.820312 728.976562 C 456.046875 727.0625 455 725.414062 453.675781 724.03125 C 452.347656 722.652344 450.796875 721.59375 449.019531 720.859375 C 447.25 720.128906 445.359375 719.761719 443.351562 719.761719 C 441.34375 719.761719 439.453125 720.128906 437.675781 720.859375 C 435.90625 721.59375 434.363281 722.652344 433.054688 724.03125 C 431.746094 725.414062 430.714844 727.0625 429.960938 728.976562 C 429.210938 730.898438 428.832031 733.039062 428.832031 735.40625 C 428.832031 737.625 429.210938 739.6875 429.960938 741.585938 C 430.714844 743.488281 431.746094 745.136719 433.054688 746.53125 C 434.363281 747.929688 435.90625 749.035156 437.675781 749.839844 C 439.453125 750.644531 441.34375 751.046875 443.351562 751.046875 C 445.359375 751.046875 447.25 750.671875 449.019531 749.917969 C 450.796875 749.167969 452.347656 748.109375 453.675781 746.746094 C 455 745.386719 456.046875 743.734375 456.820312 741.800781 C 457.589844 739.867188 457.972656 737.734375 457.972656 735.40625"/></g></symbol></svg>
+
+<div class="deck" id="deck" tabindex="-1">
+
+  <section class="cover">
+    <div class="eyebrow">Frontline Non-fiction Short Film Fellowship<span class="zh">前線非虛構短片工作坊</span></div>
+    <h1>How Do Documentary Shorts Find Their Audiences?</h1>
+    <div class="zh-head">紀錄短片，如何找到它的觀眾</div>
+    <hr class="rule">
+    <div class="who">
+      <span class="name">YuRu Shih 施俞如</span>
+      <span class="role">Producer &amp; Director of Programming and Marketing, Giloo<span class="zh">製片．Giloo 節目與行銷總監</span></span>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Where I stand<span class="zh">我站的位置</span></div>
+    <h2 class="wide">I sit on both sides of the problem.</h2>
+    <div class="zh-head">我同時站在問題的兩邊</div>
+    <div class="stack">
+      <p class="en">I program and market films at Giloo, a Taiwanese curation platform for independent, issue-driven cinema.</p>
+      <p class="zh">我在 Giloo 負責節目策劃跟行銷。Giloo 是台灣的策展平台，專門放議題型的獨立電影。</p>
+    </div>
+    <div class="stack">
+      <p class="en">I am also a producer. My latest film, Me and My Condemned Father, opened in Taiwanese cinemas this September.</p>
+      <p class="zh">我同時是製片。我最新的作品《我的爸爸是死刑犯》，今年九月在台灣院線上映。</p>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Where I stand<span class="zh">我站的位置</span></div>
+    <h2 class="long">So I have been the person holding a finished film with no idea what comes next, and the person trying to find an audience for someone else's.</h2>
+    <div class="zh-head">我做過片子拍完、不知道下一步要幹嘛的人，也做過要幫別人的片子找觀眾的人</div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section class="quote">
+    <div class="eyebrow">A question from registration<span class="zh">來自報名者的提問</span></div>
+    <h2>“We spent eight months filming. And then what? I want to know about the after.”</h2>
+    <div class="zh-head">「我們花了八個月拍一部片，然後呢？我想知道『然後』。」</div>
+    <div class="stack">
+      <p class="en wide">I want to spend the next fifteen minutes answering this one question.</p>
+      <p class="zh">接下來十五分鐘，我想用整場來回答這一句話。</p>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">The map<span class="zh">先看地圖</span></div>
+    <h2 class="wide">Where can a finished short actually go?</h2>
+    <div class="zh-head">一部拍完的短片，可以去哪裡？</div>
+    <div class="routes">
+      <div class="route">
+        <span class="en">Festivals</span>
+        <p class="en-sub">International, regional, issue-based, shorts-only. Different scales, different aims.</p>
+        <p class="zh">影展。國際大型、地區型、議題型，還有短片專門的影展。規模跟訴求都不一樣。</p>
+      </div>
+      <div class="route">
+        <span class="en">Community screenings</span>
+        <p class="en-sub">Clubs, classrooms, NGOs, bookshops. Thirty people, four or five shorts in a sitting.</p>
+        <p class="zh">社群放映。社團、教室、NGO、書店。二三十人的場，一次放四五部短片。</p>
+      </div>
+      <div class="route">
+        <span class="en">Online platforms</span>
+        <p class="en-sub">License to a streamer or publish it yourself, so the film has somewhere to stay alive.</p>
+        <p class="zh">線上平台。授權給串流平台或自己上架，讓片子有一個長期活著的地方。</p>
+      </div>
+      <div class="route">
+        <span class="en">Institutional licensing</span>
+        <p class="en-sub">Schools, libraries, museums, companies. One of the few places a short gets paid.</p>
+        <p class="zh">公播授權。學校、圖書館、美術館、企業。短片少數真的收得到錢的地方。</p>
+      </div>
+      <div class="route">
+        <span class="en">Broadcast and media</span>
+        <p class="en-sub">TV channels, online outlets, feature collaborations with news platforms.</p>
+        <p class="zh">電視與媒體。電視台、線上媒體、新聞平台的專題合作。</p>
+      </div>
+      <div class="route">
+        <span class="en">The next film</span>
+        <p class="en-sub">A short is your calling card. It can buy feature funding or a commission.</p>
+        <p class="zh">下一部片。短片是你的名片，可以換到長片的資金或一個委製案。</p>
+      </div>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">The map<span class="zh">先看地圖</span></div>
+    <h2 class="long">More places than most people think. None of them happens on its own.</h2>
+    <div class="zh-head">比大部分人想的多。可是這些地方，沒有一個會自己發生</div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">The problem<span class="zh">問題</span></div>
+    <h2 class="wide">Three things break at the same time.</h2>
+    <div class="zh-head">三件事同時卡住</div>
+    <div class="cols">
+      <div class="col">
+        <div class="tag">Audiences</div>
+        <h3>They cannot find the film.</h3>
+        <p class="zh lead">觀眾找不到你的片</p>
+        <p class="en-sub">They do not know it exists.</p>
+        <p class="zh">他們不知道它存在。</p>
+      </div>
+      <div class="col">
+        <div class="tag">Creators</div>
+        <h3>They cannot sustain the work.</h3>
+        <p class="zh lead">創作者沒辦法靠這件事活下去</p>
+        <p class="en-sub">Finish one film and you start hunting for the next budget.</p>
+        <p class="zh">拍完一部，還是要重新找下一筆錢。</p>
+      </div>
+      <div class="col">
+        <div class="tag">Market</div>
+        <h3>There is no channel out.</h3>
+        <p class="zh lead">市場沒有出口</p>
+        <p class="en-sub">More films get made every year. The ways out have not grown.</p>
+        <p class="zh">每年拍出來的片越來越多，管道卻沒有變多。</p>
+      </div>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Why shorts feel it first<span class="zh">為什麼短片最先感受到</span></div>
+    <h2>A short film's life is a few festivals, and then silence.</h2>
+    <div class="zh-head">一部短片的生命，常常就是幾個影展，然後就安靜了</div>
+    <div class="stack">
+      <p class="en">For most shorts there is no theatrical window to approach, no distributor who is interested, and no marketing budget. Submitting to festivals becomes the only goal.</p>
+      <p class="zh">多數短片沒有院線窗口可以聯繫，沒有發行商有興趣，也沒有行銷預算。投稿影展變成唯一的目標。</p>
+    </div>
+    <div class="stack">
+      <p class="en">For a short, the day the festival ends is often the day people stop mentioning it.</p>
+      <p class="zh">對短片來說，影展結束的那一天，常常就是沒有人再提起它的那一天。</p>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section class="split">
+    <div class="side">
+      <div class="eyebrow">The problem</div>
+      <div class="stack">
+        <p class="en">Through my work with filmmakers, festivals, and audiences, I came to see one clear problem.</p>
+      </div>
+      <h2>It is not a content problem. It is a <span class="hl">distribution</span> problem.</h2>
+      <div class="stack">
+        <p class="en">The films exist. The audiences exist. The path between them is broken.</p>
+      </div>
+    </div>
+    <div class="side"><svg class="gapfig" viewBox="0 0 620 385" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Films on the left, audiences on the right, most rows broken in the middle"><text class="lbl" x="30" y="20" text-anchor="start">FILMS</text><text class="lbl" x="590" y="20" text-anchor="end">AUDIENCES</text><line class="whole" x1="30" y1="62" x2="590" y2="62" stroke-width="2.2"/><circle class="dot on" cx="30" cy="62" r="5.5"/><circle class="dot on" cx="590" cy="62" r="5.5"/><line class="broken" x1="30" y1="107" x2="250" y2="107" stroke-width="2"/><line class="broken" x1="370" y1="107" x2="590" y2="107" stroke-width="2"/><circle class="dot" cx="30" cy="107" r="5"/><circle class="dot" cx="590" cy="107" r="5"/><line class="whole" x1="30" y1="152" x2="590" y2="152" stroke-width="2.2"/><circle class="dot on" cx="30" cy="152" r="5.5"/><circle class="dot on" cx="590" cy="152" r="5.5"/><line class="broken" x1="30" y1="197" x2="250" y2="197" stroke-width="2"/><line class="broken" x1="370" y1="197" x2="590" y2="197" stroke-width="2"/><circle class="dot" cx="30" cy="197" r="5"/><circle class="dot" cx="590" cy="197" r="5"/><line class="broken" x1="30" y1="242" x2="250" y2="242" stroke-width="2"/><line class="broken" x1="370" y1="242" x2="590" y2="242" stroke-width="2"/><circle class="dot" cx="30" cy="242" r="5"/><circle class="dot" cx="590" cy="242" r="5"/><line class="broken" x1="30" y1="287" x2="250" y2="287" stroke-width="2"/><line class="broken" x1="370" y1="287" x2="590" y2="287" stroke-width="2"/><circle class="dot" cx="30" cy="287" r="5"/><circle class="dot" cx="590" cy="287" r="5"/><path d="M 310 322 L 318 336 L 302 336 Z" fill="var(--red)"/><text class="lbl warn" x="310" y="362" text-anchor="middle">DISTRIBUTION GAP</text></svg></div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">The broken link<span class="zh">斷掉的那一節</span></div>
+    <h2 class="wide">Every stage assumes marketing is the next stage's job.</h2>
+    <div class="zh-head">每個環節都以為行銷是下一個環節的事</div>
+    <div class="chain">
+      <div class="link"><span class="en">Development · the grant</span><span class="zh">開發．找補助</span></div>
+      <span class="gap">→</span>
+      <div class="link"><span class="en">Shooting · just finish it</span><span class="zh">拍攝．拍完就好</span></div>
+      <span class="gap">→</span>
+      <div class="link"><span class="en">Post · the deadline</span><span class="zh">後製．趕影展截止日</span></div>
+      <span class="gap">→</span>
+      <div class="link"><span class="en">Festival Run · submit and wait</span><span class="zh">跑影展．投稿、等結果、幾場放映</span></div>
+      <span class="gap faint">⇢</span>
+      <div class="link unreached"><span class="en">Distribution · few buyers</span><span class="zh">發行．很少有發行商會買</span></div>
+    </div>
+    <div class="stack">
+      <p class="en">Development chases the grant. Shooting just wants to finish. Post is racing a festival deadline. By the time someone has to find the audience, the money is spent, the team is gone, and the director is tired.</p>
+      <p class="zh">開發想的是拿到補助，拍攝想的是拍完，後製想的是趕上影展截止日。輪到要找觀眾時，錢花完了，團隊散了，導演也累了。</p>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">The broken link<span class="zh">斷掉的那一節</span></div>
+    <h2 class="long">So most shorts stop at the festival run. Very few get picked up by a distributor, which leaves the promotion to you.</h2>
+    <div class="zh-head">所以大部分的短片停在跑影展這一格。很少有發行商會買短片，宣傳最後只能靠自己</div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Timing<span class="zh">時機</span></div>
+    <h2>“And then what” cannot wait until the film is finished.</h2>
+    <div class="zh-head">「然後呢」不能等到拍完才想</div>
+    <div class="stack">
+      <p class="en">Whether your shoot runs eight months or three years, you meet people. Your subjects. The organisations around them. The teachers who care about this. The ones who helped you.</p>
+      <p class="zh">不管你拍八個月還是三年，你都會遇到很多人。受訪者、相關的組織、關心這個題目的老師、幫過你的人。</p>
+    </div>
+    <div class="stack">
+      <p class="en">That stretch is the closest you will ever be to these people. After you wrap, you will not run into them again.</p>
+      <p class="zh">那段時間，是你這輩子離這群人最近的時候。拍完之後，你就再也遇不到他們了。</p>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Money, before you shoot<span class="zh">開拍之前的錢</span></div>
+    <h2 class="wide">The money has the same deadline. Raise it before you shoot.</h2>
+    <div class="zh-head">錢也一樣，開拍前就要解決，不要拍完才想</div>
+    <div class="stack">
+      <p class="en">Crowdfunding, community fundraising, and pre-selling rights keep your cost low from the start. Borrowing to shoot and hoping the box office covers it is the wrong order.</p>
+      <p class="zh">募資、群眾集資、預售版權，可以讓成本從一開始就壓低。先借錢拍片再想回收，順序是反的。</p>
+    </div>
+    <div class="stack">
+      <p class="en">A campaign is not only money. Everyone who backs you already cares about this subject, so you finish the film already holding a list.</p>
+      <p class="zh">募資不只是拿到錢。每個支持你的人，都是已經在乎這個題目的人，你拍完就已經有一份名單。</p>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Why shorts get made<span class="zh">為什麼要拍短片</span></div>
+    <h2 class="long">Many shorts are made as a calling card, and the return arrives as funding or a commission for the next film.</h2>
+    <div class="zh-head">很多人拍短片是為了當名片，回報出現在下一部片的資金或委製案上</div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Why relationships<span class="zh">為什麼要經營關係</span></div>
+    <h2 class="wide">Festivals gather people. Theatres sell tickets. Neither one keeps anybody.</h2>
+    <div class="zh-head">影展把人聚起來，戲院把票賣掉。兩個都留不住人</div>
+    <div class="stack">
+      <p class="en">A festival ends and everyone goes home. A cinema's relationship with a viewer ends at the door.</p>
+      <p class="zh">影展散場之後，大家就回家了。戲院跟觀眾的關係，在走出大門那一刻就結束了。</p>
+    </div>
+    <div class="stack">
+      <p class="en">You need somewhere the relationship can continue.</p>
+      <p class="zh">你需要一個地方，讓關係可以延續下去。</p>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">A question<span class="zh">一個問題</span></div>
+    <h2 class="wide">Why build your own audience from day one, instead of leaving it to a distributor?</h2>
+    <div class="zh-head">為什麼從第一天就要養自己的觀眾，而不是交給發行商？</div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Why it has to be you<span class="zh">為什麼必須是你自己</span></div>
+    <h2 class="wide">Their list never becomes your list.</h2>
+    <div class="zh-head">發行商的名單，不會變成你的名單</div>
+    <div class="cols">
+      <div class="col">
+        <div class="tag">You won't know them</div>
+        <h3>You never see who actually responded.</h3>
+        <p class="zh lead">你不會知道你的觀眾是誰</p>
+        <p class="en-sub">The dashboard, the post metrics, the people replying in the comments. If you never look, you never learn who the film reached.</p>
+        <p class="zh">後台數據、貼文成效、留言裡回話的人。你自己不去看，就永遠不會知道這部片打到誰。</p>
+      </div>
+      <div class="col">
+        <div class="tag">They won't show up</div>
+        <h3>Nobody buys a ticket for a stranger.</h3>
+        <p class="zh lead">他們不會為你走進戲院</p>
+        <p class="en-sub">With no prior contact and no relationship, nobody buys a ticket just to support you.</p>
+        <p class="zh">沒有互動過，沒有建立過關係，他們不會特地買一張票去支持你。</p>
+      </div>
+      <div class="col">
+        <div class="tag">Next film, from zero</div>
+        <h3>The press contacts and the corporate buyers stay with them.</h3>
+        <p class="zh lead">下一部片，你還是從零開始</p>
+        <p class="en-sub">Press contacts and corporate buyers stay with the distributor. Your next film starts over.</p>
+        <p class="zh">媒體資源、包場的企業名單，都留在片商手上。下一部片你又要從頭來過。</p>
+      </div>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">A real case<span class="zh">一個真實的例子</span></div>
+    <h2 class="wide">Six years later, same subject, and we started from zero.</h2>
+    <div class="zh-head">六年後，同一個題目，我們從零開始</div>
+    <div class="case">
+      <div class="stack">
+        <p class="en">A director I work with released a film on this subject six years ago, with a large following on Facebook and Instagram.</p>
+        <p class="zh">我合作的一位導演，六年前有一部同樣題目的片，臉書跟 IG 累積了非常多粉絲。</p>
+      </div>
+      <div class="stack">
+        <p class="en">Six years on, different protagonist, same subject, and we opened both accounts from zero. Everything he built stayed with the previous distributor.</p>
+        <p class="zh">六年後，不同的主角，同一個題目，兩個帳號都從零開始。他累積的東西，都留在上一個發行商身上。</p>
+      </div>
+      <div class="stack">
+        <p class="en">Building those relationships is what a distributor is good at, and it is real value. The list just does not copy itself over to the filmmaker.</p>
+        <p class="zh">累積這些關係是發行商的專業，也是他們的價值。問題是這份名單不會自動複製一份給創作者。</p>
+      </div>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">A real case<span class="zh">一個真實的例子</span></div>
+    <h2 class="wide">You have to ask for it. Nobody hands it over on their own.</h2>
+    <div class="zh-head">你要主動去要，不然沒有人會主動給</div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Six years at Giloo<span class="zh">在 Giloo 六年</span></div>
+    <h2>Three things we learned.</h2>
+    <div class="zh-head">我們學到的三件事</div>
+    <div class="learn">
+      <div class="row">
+        <div class="idx">01</div>
+        <div>
+          <h3>Curation beats the algorithm.</h3>
+          <p class="zh">策展勝過演算法。一個人指著一部片說「你應該看這個」，比任何推薦系統都有用。</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="idx">02</div>
+        <div>
+          <h3>People pay for meaning.</h3>
+          <p class="zh">人們願意為意義付費。觀眾會為了想懂一件事而花錢。</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="idx">03</div>
+        <div>
+          <h3>Community out-distributes ads.</h3>
+          <p class="zh">社群比廣告更會傳播。一部片透過喜歡它的人往外走，會比任何廣告預算走得遠。</p>
+        </div>
+      </div>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Evidence<span class="zh">兩個數字</span></div>
+    <h2>Two numbers.</h2>
+    <div class="stats">
+      <div class="stat">
+        <div class="fig">95%</div>
+        <div class="cap">of Giloo's visitors arrive on their own. Only five percent come through paid ads.</div>
+        <p class="zh">Giloo 的訪客有九成五是自己找上來的，只有百分之五是廣告帶來的。</p>
+      </div>
+      <div class="stat">
+        <div class="fig">1K &amp; 10K</div>
+        <div class="cap">One night with an arts festival. Over a thousand people in the room, over ten thousand watching online at the same time.</div>
+        <p class="zh">跟一個藝術節合作的晚上，現場一千多人，線上同時超過一萬人在看片。</p>
+      </div>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">What actually remains<span class="zh">真正留下來的</span></div>
+    <h2>What that night left behind was the list.</h2>
+    <div class="zh-head">那一晚真正留下來的資產，是名單</div>
+    <div class="stack">
+      <p class="en">Online viewers had to register, so we had a way to reach them again. We could keep talking to them after the event.</p>
+      <p class="zh">因為線上觀看需要報名，我們拿得到聯絡方式。事後我們可以繼續跟這些人說話。</p>
+    </div>
+    <div class="stack">
+      <p class="en">A screening of fifty people that collects no contact details makes those fifty people disappear for good.</p>
+      <p class="zh">一場五十個人的放映，如果沒有留下任何聯絡方式，那五十個人就永遠消失了。</p>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Social media, used properly<span class="zh">社群媒體真正的用途</span></div>
+    <h2 class="wide">Social media is where you find named people, not where you post into the air.</h2>
+    <div class="zh-head">社群媒體的用途，是幫你找到具名的人</div>
+    <div class="cols">
+      <div class="col">
+        <div class="tag">Amplifiers</div>
+        <h3>They make more people aware of the film.</h3>
+        <p class="zh lead">能幫你放大聲量的人</p>
+        <p class="en-sub">Press, critics, creators with reach. They make more people aware the film exists.</p>
+        <p class="zh">媒體、影評、有影響力的創作者。他們讓更多人知道這部片存在。</p>
+      </div>
+      <div class="col">
+        <div class="tag">Activators</div>
+        <h3>They physically bring people into the room.</h3>
+        <p class="zh lead">能真的把人帶到現場的人</p>
+        <p class="en-sub">Teachers, NGO staff, club officers, book club hosts. One email, one meeting at a time.</p>
+        <p class="zh">老師、NGO 工作者、社團幹部、讀書會召集人。只能一個一個寫信、一個一個約。</p>
+      </div>
+    </div>
+    <div class="stack">
+      <p class="en">The second kind is harder, and the second kind is what keeps a film alive for years.</p>
+      <p class="zh">第二種比較難，可是第二種才是會讓你的片子活很久的那種人。</p>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Start now<span class="zh">現在就能做</span></div>
+    <h2>Three things you can start during production.</h2>
+    <div class="zh-head">從拍攝期就能開始做的三件事</div>
+    <div class="steps">
+      <div class="step">
+        <div class="en"><i>01</i>Open a list today.</div>
+        <p class="en-sub">Every time someone reacts to the subject, write down who they are and why they care.</p>
+        <p class="zh">現在就開一份名單。每遇到一個對這個題目有反應的人，就記下他是誰、為什麼在乎。</p>
+      </div>
+      <div class="step">
+        <div class="en"><i>02</i>Collect contacts at every screening.</div>
+        <p class="en-sub">This is the cheapest chance you will ever get.</p>
+        <p class="zh">每一場放映都要留下聯絡方式。這是你最便宜的一次機會。</p>
+      </div>
+      <div class="step">
+        <div class="en"><i>03</i>Decide which existing conversation your film joins.</div>
+        <p class="en-sub">It does not need to speak to everyone, only to the people who already care.</p>
+        <p class="zh">想清楚你的片子要放進哪一個已經存在的討論裡。它只需要跟真正在乎的那群人說話。</p>
+      </div>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Money, after you finish<span class="zh">拍完之後的錢</span></div>
+    <h2>Shorts almost never recoup at the box office. Institutions are who pay.</h2>
+    <div class="zh-head">短片幾乎不可能靠票房回本。真正付錢的是機構</div>
+    <div class="stack">
+      <p class="en">Schools, libraries, NGOs, foundations, and corporate social responsibility programmes. That is also how Giloo earns: individual subscriptions and rentals on one side, group licences on the other.</p>
+      <p class="zh">學校、圖書館、NGO、基金會、企業社會責任專案。Giloo 的收入也是這個結構。</p>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">What you are really building<span class="zh">你真正累積的東西</span></div>
+    <h2 class="long">The asset you are building is the list, and the people who remember you.</h2>
+    <div class="zh-head">你真正累積的資產，是那份名單，跟那群記得你的人</div>
+    <div class="stack">
+      <p class="en">The rest of the return arrives on the next film, as a commission or a backed campaign.</p>
+      <p class="zh">其他的回報出現在下一部片，變成委製案或集資的支持。</p>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Honestly<span class="zh">誠實地說</span></div>
+    <h2>We have not solved this.</h2>
+    <div class="zh-head">我們還沒有解決這個問題</div>
+    <div class="stack">
+      <p class="en">Discovery is still hard, and good films still get missed. Sustainable creator income needs a scale we are still building.</p>
+      <p class="zh">發現仍然很難，好片還是會被錯過。要讓創作者有持續的收入，需要更大的規模。</p>
+    </div>
+    <div class="stack">
+      <p class="en">I am saying this because we are still working it out, and I would rather figure it out alongside you.</p>
+      <p class="zh">我說這些，是因為我們仍在摸索。我希望跟你們一起想清楚。</p>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section class="close">
+    <div class="eyebrow">If you take one thing<span class="zh">如果只帶走一件事</span></div>
+    <h2>Three things I am sure of.</h2>
+    <div class="lines">
+      <div class="line">
+        <div class="en">A finished film is a beginning. Plan its second life.</div>
+        <p class="zh">一部拍完的片只是開始。它需要第二次生命，而那要有人規劃。</p>
+      </div>
+      <div class="line">
+        <div class="en">Your most valuable audience is already sharing. Give them a way to.</div>
+        <p class="zh">你最有價值的觀眾，其實已經在幫你分享了。你只是還沒給他們一個方式。</p>
+      </div>
+      <div class="line">
+        <div class="en">Curation and community are distribution. A person who picks your film and vouches for it does the job a distributor does.</div>
+        <p class="zh">策展跟社群，本身就是發行。一個人挑了你的片、還替它背書，做的就是發行商在做的事。</p>
+      </div>
+    </div>
+    <div class="stack">
+      <p class="en">True whether or not you ever use Giloo.</p>
+      <p class="zh">不管你有沒有用 Giloo，這三件事都是真的。</p>
+    </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section class="end">
+    <div class="thanks">Thank you<span class="zh">謝謝大家</span></div>
+    <div class="handle">YuRu Shih 施俞如 · giloo.ist</div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+</div>
+
+<div class="hint" id="hint">↓ / Space to advance</div>
+
+<script>
+  (function () {
+    var deck = document.getElementById('deck');
+    var hint = document.getElementById('hint');
+    var slides = Array.prototype.slice.call(deck.querySelectorAll('section'));
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function current() {
+      var top = deck.scrollTop;
+      var best = 0, bestDist = Infinity;
+      for (var i = 0; i < slides.length; i++) {
+        var d = Math.abs(slides[i].offsetTop - top);
+        if (d < bestDist) { bestDist = d; best = i; }
+      }
+      return best;
+    }
+
+    function go(delta) {
+      var i = Math.min(slides.length - 1, Math.max(0, current() + delta));
+      deck.scrollTo({ top: slides[i].offsetTop, behavior: reduce ? 'auto' : 'smooth' });
+      hide();
+    }
+
+    var hidden = false;
+    function hide() {
+      if (hidden) return;
+      hidden = true;
+      hint.classList.add('gone');
+    }
+
+    document.addEventListener('keydown', function (e) {
+      var k = e.key;
+      if (k === 'ArrowDown' || k === 'PageDown' || k === ' ' || k === 'ArrowRight') {
+        e.preventDefault(); go(1);
+      } else if (k === 'ArrowUp' || k === 'PageUp' || k === 'ArrowLeft') {
+        e.preventDefault(); go(-1);
+      } else if (k === 'Home') {
+        e.preventDefault(); deck.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); hide();
+      } else if (k === 'End') {
+        e.preventDefault(); deck.scrollTo({ top: deck.scrollHeight, behavior: reduce ? 'auto' : 'smooth' }); hide();
+      }
+    });
+
+    deck.addEventListener('scroll', function () {
+      if (deck.scrollTop > 40) hide();
+    }, { passive: true });
+
+    setTimeout(hide, 9000);
+  })();
+</script>
+
+</body>
+</html>
