@@ -388,6 +388,17 @@
 
   /* ---- big stats ---- */
 
+  .odds { width: 100%; border-collapse: collapse; margin-top: clamp(0.6rem, 2vh, 1.4rem); font-family: var(--sans); }
+  .odds th, .odds td { text-align: left; padding: clamp(0.28rem, 0.65vh, 0.5rem) 0.6rem clamp(0.28rem, 0.65vh, 0.5rem) 0; border-bottom: 1px solid var(--line); vertical-align: baseline; }
+  .odds th { font-size: clamp(0.62rem, 0.8vw, 0.72rem); letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); font-weight: 500; }
+  .odds th .zh, .odds td .zh { font-family: var(--han); font-weight: 300; color: var(--muted); letter-spacing: 0.04em; text-transform: none; }
+  .odds th .zh { margin-left: 0.5em; font-size: 0.95em; }
+  .odds td { font-size: clamp(0.88rem, 1.05vw, 1rem); color: var(--text); line-height: 1.3; }
+  .odds td .zh { display: block; font-size: clamp(0.7rem, 0.82vw, 0.78rem); line-height: 1.4; margin-top: 0.1rem; }
+  .odds td.n { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .odds td.rate { font-family: var(--display); font-size: clamp(1.2rem, 1.7vw, 1.6rem); font-weight: 500; color: var(--red); letter-spacing: -0.01em; white-space: nowrap; line-height: 1; }
+  .odds tr:last-child td { border-bottom: 0; }
+  .src { font-family: var(--sans); font-size: clamp(0.6rem, 0.72vw, 0.68rem); color: var(--dim); line-height: 1.5; margin-top: clamp(0.4rem, 1vh, 0.8rem); }
   .stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
@@ -648,6 +659,50 @@
       <p class="en">For a short, the day the festival ends is often the day people stop mentioning it.</p>
       <p class="zh">對短片來說，影展結束的那一天，常常就是沒有人再提起它的那一天。</p>
     </div>
+    <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
+    <div class="num"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">The odds<span class="zh">有多少短片真的進得去</span></div>
+    <h2>How many get in.</h2>
+    <table class="odds">
+      <thead>
+        <tr>
+          <th>Festival<span class="zh">影展</span></th>
+          <th>Submitted<span class="zh">報名</span></th>
+          <th>Selected<span class="zh">入選</span></th>
+          <th>Rate<span class="zh">比例</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sundance 2026, Short Film Program<span class="zh">日舞影展 短片單元</span></td>
+          <td class="n">11,480</td><td class="n">54</td><td class="rate">0.5%</td>
+        </tr>
+        <tr>
+          <td>Cannes 2026, Short Films in Competition<span class="zh">坎城影展 短片競賽</span></td>
+          <td class="n">3,184</td><td class="n">10</td><td class="rate">0.3%</td>
+        </tr>
+        <tr>
+          <td>Clermont-Ferrand 2026, all competitions<span class="zh">克萊蒙費宏短片影展 三個競賽合計</span></td>
+          <td class="n">7,000+</td><td class="n">144</td><td class="rate">2%</td>
+        </tr>
+        <tr>
+          <td>Short Shorts Film Festival &amp; Asia 2026, Tokyo<span class="zh">東京 SSFF &amp; ASIA 全部單元</span></td>
+          <td class="n">5,000</td><td class="n">250</td><td class="rate">5%</td>
+        </tr>
+        <tr>
+          <td>Golden Horse Awards 2025, Best Documentary Short<span class="zh">金馬獎 最佳紀錄短片</span></td>
+          <td class="n">79</td><td class="n">5</td><td class="rate">6%</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="stack">
+      <p class="en">Most good films do not get in. Plan the life outside the festival anyway.</p>
+      <p class="zh">大多數好片都進不去。影展之外的路，不管怎樣都要先想好。</p>
+    </div>
+    <p class="src">Sources: sundance.org · festival-cannes.com · lecourt-clermont.org, Cineuropa · shortshorts.org · goldenhorse.org.tw (62nd, 2025: 310 live-action shorts submitted, also five nominees)</p>
     <svg class="mark" viewBox="0 0 236.93 105.05" aria-label="Giloo" role="img"><use href="#giloo-mark"/></svg>
     <div class="num"></div>
   </section>
